@@ -1,0 +1,435 @@
+<<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .sidebar h1 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .sidebar ul li:hover {
+            background-color: #444;
+            padding: 5px;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            box-sizing: border-box;
+            display: none;
+        }
+
+        .module {
+            display: none;
+        }
+
+        .module.active {
+            display: block;
+        }
+
+        /* Estilos para el módulo de inicio de sesión */
+        #login-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            position: absolute;
+            width: 100%;
+        }
+
+        #login-form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        #login-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #login-form button {
+            padding: 10px 15px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #login-form button:hover {
+            background-color: #444;
+        }
+    </style>
+</head>
+<body>
+    <!-- Pantalla de Login -->
+    <div id="login-screen">
+        <div id="login-form">
+            <h2>Inicio de Sesión</h2>
+            <form id="login-form">
+                <input type="text" id="username" placeholder="Usuario" required>
+                <input type="password" id="password" placeholder="Contraseña" required>
+                <button type="submit">Ingresar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Pantalla Principal -->
+    <div id="main-screen" style="display:none;">
+        <div id="sidebar">
+            <a href="javascript:void(0)" onclick="showModule('ventas')">Ventas</a>
+            <a href="javascript:void(0)" onclick="showModule('anulaciones')">Anulaciones</a>
+            <a href="javascript:void(0)" onclick="showModule('cierres')">Cierres</a>
+            <a href="javascript:void(0)" onclick="showModule('proveedores')">Proveedores</a>
+            <a href="javascript:void(0)" onclick="showModule('peticiones')">Peticiones</a>
+            <a href="javascript:void(0)" onclick="showModule('quejas')">Quejas</a>
+            <a href="javascript:void(0)" onclick="showModule('reclamos')">Reclamos</a>
+            <a href="javascript:void(0)" onclick="showModule('configuraciones')">Configuraciones</a>
+            <a href="javascript:void(0)" onclick="showModule('inventarios')">Inventarios</a>
+            <a href="javascript:void(0)" onclick="logout()">Cerrar Sesión</a>
+        </div>
+        <div id="main">
+            <h1>Bienvenido al Panel de Administración</h1>
+            
+            <!-- Módulo de Ventas -->
+            <div id="ventas" class="module active">
+                <h2>Ventas</h2>
+                <table class="module-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Total Ventas</th>
+                            <th>Total Anulaciones</th>
+                            <th>Saldo Final</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>2024-11-25</td>
+                            <td>$500</td>
+                            <td>$50</td>
+                            <td>$450</td>
+                        </tr>
+                        <tr>
+                            <td>002</td>
+                            <td>2024-11-24</td>
+                            <td>$300</td>
+                            <td>$30</td>
+                            <td>$270</td>
+                        </tr>
+                        <tr>
+                            <td>003</td>
+                            <td>2024-11-23</td>
+                            <td>$450</td>
+                            <td>$45</td>
+                            <td>$405</td>
+                        </tr>
+                        <tr>
+                            <td>004</td>
+                            <td>2024-11-22</td>
+                            <td>$600</td>
+                            <td>$60</td>
+                            <td>$540</td>
+                        </tr>
+                        <tr>
+                            <td>005</td>
+                            <td>2024-11-21</td>
+                            <td>$700</td>
+                            <td>$70</td>
+                            <td>$630</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Módulo de Anulaciones -->
+            <div id="anulaciones" class="module">
+                <h2>Anulaciones</h2>
+                <table class="module-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Monto</th>
+                            <th>Motivo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>2024-11-25</td>
+                            <td>$50</td>
+                            <td>Cliente canceló</td>
+                        </tr>
+                        <tr>
+                            <td>002</td>
+                            <td>2024-11-24</td>
+                            <td>$30</td>
+                            <td>Producto no disponible</td>
+                        </tr>
+                        <tr>
+                            <td>003</td>
+                            <td>2024-11-23</td>
+                            <td>$45</td>
+                            <td>Error en el pedido</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Módulo de Cierres -->
+            <div id="cierres" class="module">
+                <h2>Cierres</h2>
+                <table class="module-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Total Ventas</th>
+                            <th>Total Anulaciones</th>
+                            <th>Saldo Final</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>2024-11-25</td>
+                            <td>$500</td>
+                            <td>$50</td>
+                            <td>$450</td>
+                        </tr>
+                        <tr>
+                            <td>002</td>
+                            <td>2024-11-24</td>
+                            <td>$300</td>
+                            <td>$30</td>
+                            <td>$270</td>
+                        </tr>
+                        <tr>
+                            <td>003</td>
+                            <td>2024-11-23</td>
+                            <td>$450</td>
+                            <td>$45</td>
+                            <td>$405</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Módulo de Proveedores -->
+            <div id="proveedores" class="module">
+                <h2>Proveedores</h2>
+                <table class="module-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Proveedor</th>
+                            <th>Producto</th>
+                            <th>Fecha de Entrega</th>
+                            <th>Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>Proveedor A</td>
+                            <td>Producto 1</td>
+                            <td>2024-11-25</td>
+                            <td>$150</td>
+                        </tr>
+                        <tr>
+                            <td>002</td>
+                            <td>Proveedor B</td>
+                            <td>Producto 2</td>
+                            <td>2024-11-24</td>
+                            <td>$200</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Módulo de Peticiones -->
+            <div id="peticiones" class="module">
+                <h2>Peticiones</h2>
+                <table class="module-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Descripción</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>2024-11-25</td>
+                            <td>Petición de producto</td>
+                            <td>En Proceso</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Módulo de Quejas -->
+            <div id="quejas" class="module">
+                <h2>Quejas</h2>
+                <table class="module-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Descripción</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>2024-11-25</td>
+                            <td>Queja por entrega tardía</td>
+                            <td>Resuelta</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Módulo de Reclamos -->
+            <div id="reclamos" class="module">
+                <h2>Reclamos</h2>
+                <table class="module-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Descripción</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>2024-11-25</td>
+                            <td>Reclamo por calidad de producto</td>
+                            <td>En Proceso</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Módulo de Configuraciones -->
+            <div id="configuraciones" class="module">
+                <h2>Configuraciones</h2>
+                <p>Ajustes de configuración de sistema.</p>
+            </div>
+
+            <!-- Módulo de Inventarios -->
+            <div id="inventarios" class="module">
+                <h2>Inventarios</h2>
+                <table class="module-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>Producto A</td>
+                            <td>100</td>
+                            <td>$50</td>
+                        </tr>
+                        <tr>
+                            <td>002</td>
+                            <td>Producto B</td>
+                            <td>200</td>
+                            <td>$30</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showModule(moduleId) {
+            const modules = document.querySelectorAll('.module');
+            modules.forEach(module => {
+                module.classList.remove('active');
+            });
+            document.getElementById(moduleId).classList.add('active');
+        }
+
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Validación simple
+            if (username === 'admin' && password === 'admin') {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-screen').style.display = 'block';
+            } else {
+                alert('Usuario o contraseña incorrectos');
+            }
+        });
+
+        function logout() {
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('main-screen').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
